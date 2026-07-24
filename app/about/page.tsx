@@ -162,41 +162,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Timeline */}
-      <section className={styles.timelineSection}>
-        <div className={styles.timelineContainer}>
-          <p className={styles.timelineLabel}>
-            Journey
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-            {timeline.map(({ year, event }, i) => (
-              <div key={year} className={styles.timelineItem}>
-                <span className={`${styles.timelineYear} ${year === "Now" ? styles.timelineYearNow : styles.timelineYearPast}`}>
-                  {year}
-                </span>
-                <p className={styles.timelineEvent}>
-                  {event}
-                </p>
-              </div>
-            ))}
-
-{ /*
-          <div className={styles.timelineDisclaimer}>
-              <Link2 size={14} color="var(--accent)" />
-              <a 
-                href="https://www.linkedin.com/in/salimovilyass" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.timelineDisclaimerLink}
-              >
-                <i>For detailed work history and recommendations — see <b>LinkedIn</b>.</i>
-              </a>
-          </div>
-*/ }
-
-          </div>
-        </div>
-      </section>
 
       {/* Tech Stack */}
       <section className={styles.techStackSection}>
@@ -227,7 +192,7 @@ export default function AboutPage() {
           Have a project in mind or want to discuss an idea?
         </p>
         <Link
-          href="https://www.upwork.com/freelancers/salimovilyas"
+          href="mailto:contact@ilyas-ones.com"
           className={styles.ctaButton}
         >
           Get in Touch <ArrowRight size={14} />

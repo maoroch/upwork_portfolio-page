@@ -1,45 +1,32 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
-import { getProjects } from "@/lib/data";
-import ProjectCard from "@/components/ProjectCard";
+import { useState, useEffect } from "react";
+import { ArrowUpRight } from "lucide-react";
+
+function GoogleDriveBackground() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: "min(90vw, 700px)",
+        height: "min(90vw, 700px)",
+        pointerEvents: "none",
+        zIndex: 0,
+        opacity: 0.08,
+        fill: "var(--accent)",
+      }}
+    >
+      <path d="M21.4231,13.88785,15.33356,3.33792H8.66663l6.09,10.54993ZM8.08917,4.33835,2,14.88736l3.33356,5.77472,6.08911-10.54926Zm1.73273,10.549L6.48877,20.66208H18.66663L22,14.88736Z" />
+    </svg>
+  );
+}
 
 export default function PortfolioPage() {
-  const allProjects = getProjects();
-  
-  // Dynamically build category list from actual project data
-  // Helper to format category names for display
-  const formatCategoryLabel = (cat: string): string => {
-    // Special case: "ecommerce" (no hyphen) should appear as "E‑commerce"
-    if (cat === "ecommerce") return "E‑commerce";
-    
-    // For hyphenated categories: capitalize each part, then join with hyphen
-    if (cat.includes("-")) {
-      return cat
-        .split("-")
-        .map(part => part.charAt(0).toUpperCase() + part.slice(1))
-        .join("-");
-    }
-    
-    // Default: just capitalise first letter
-    return cat.charAt(0).toUpperCase() + cat.slice(1);
-  };
-
-  // Inside the component:
-  const categories = useMemo(() => {
-    const uniqueCategories = Array.from(
-      new Set(allProjects.map((project) => project.category))
-    ).filter(Boolean).sort();
-
-    const categoryItems = uniqueCategories.map((cat) => ({
-      value: cat,
-      label: formatCategoryLabel(cat),
-    }));
-
-    return [{ value: "all", label: "All" }, ...categoryItems];
-  }, [allProjects]);
-
-  const [active, setActive] = useState("all");
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -52,138 +39,136 @@ export default function PortfolioPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const filtered =
-    active === "all"
-      ? allProjects
-      : allProjects.filter((p) => p.category === active);
+  const driveUrl =
+    "https://drive.google.com/drive/folders/1CBxmk25gXMsC4EiyScdOBU2blu70qXvi?usp=sharing";
 
   return (
-    <div style={{ paddingTop: 70 }}>
+    <div
+      style={{
+        paddingTop: 70,
+        minHeight: "calc(100vh - 140px)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {/* Background Google Drive SVG watermark */}
+      <GoogleDriveBackground />
+
       <section
         style={{
-          maxWidth: 1100,
+          maxWidth: 720,
+          width: "100%",
           margin: "0 auto",
-          padding: isMobile ? "60px 16px 32px" : "80px 24px 48px",
+          padding: isMobile ? "40px 20px 80px" : "60px 24px 100px",
+          textAlign: "center",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          position: "relative",
+          zIndex: 1,
         }}
       >
-        <p
+        {/* Subtle radial ambient glow */}
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "380px",
+            height: "380px",
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle, rgba(255,141,120,0.12) 0%, transparent 70%)",
+            pointerEvents: "none",
+            zIndex: 0,
+          }}
+        />
+
+        {/* Badge */}
+        <span
           style={{
             fontFamily: "'DM Mono', monospace",
             fontSize: 11,
             letterSpacing: "0.12em",
             textTransform: "uppercase",
-            color: "var(--text-muted)",
-            marginBottom: 16,
+            color: "var(--accent)",
+            border: "1px solid var(--accent-dim)",
+            backgroundColor: "var(--accent-bg)",
+            padding: "5px 16px",
+            borderRadius: 2,
+            marginBottom: 24,
+            position: "relative",
+            zIndex: 1,
           }}
         >
-          Work
-        </p>
+          Google Drive Repository
+        </span>
+
+        {/* Title */}
         <h1
           style={{
             fontFamily: "'DM Serif Display', serif",
             fontSize: isMobile
-              ? "clamp(28px, 6vw, 48px)"
-              : "clamp(36px, 5vw, 60px)",
+              ? "clamp(34px, 8vw, 48px)"
+              : "clamp(42px, 6vw, 58px)",
             color: "var(--text)",
             letterSpacing: "-0.02em",
-            marginBottom: 20,
-            lineHeight: 1.1,
+            marginBottom: 18,
+            lineHeight: 1.15,
+            position: "relative",
+            zIndex: 1,
           }}
         >
-          Portfolio
+          Projects Portfolio
         </h1>
+
+        {/* Description */}
         <p
           style={{
             color: "var(--text-muted)",
-            fontSize: isMobile ? 14 : 16,
-            maxWidth: 480,
+            fontSize: isMobile ? 15 : 17,
+            maxWidth: 520,
             lineHeight: 1.7,
-            marginBottom: 0,
+            margin: "0 auto 40px",
+            position: "relative",
+            zIndex: 1,
           }}
         >
-          Selected projects across CRM systems, AI products, frontend
-          architecture, and full‑stack applications.
+          All active projects, case studies, video demos, and source files are stored and organized in my public Google Drive repository.
         </p>
-      </section>
 
-      {/* Filter - horizontally scrollable on mobile */}
-      <div
-        style={{
-          borderTop: "1px solid var(--border)",
-          borderBottom: "1px solid var(--border)",
-          backgroundColor: "var(--bg-2)",
-          position: "sticky",
-          top: 70,
-          zIndex: 50,
-        }}
-      >
-        <div
-          style={{
-            maxWidth: 1100,
-            margin: "0 auto",
-            padding: isMobile ? "0 16px" : "0 24px",
-            display: "flex",
-            gap: 0,
-            overflowX: "auto",
-            overflowY: "hidden",
-            scrollBehavior: "smooth",
-            WebkitOverflowScrolling: "touch",
-          }}
-        >
-          {categories.map(({ value, label }) => (
-            <button
-              key={value}
-              onClick={() => setActive(value)}
-              style={{
-                padding: isMobile ? "12px 14px" : "14px 20px",
-                background: "none",
-                border: "none",
-                borderBottom:
-                  active === value
-                    ? "2px solid var(--accent)"
-                    : "2px solid transparent",
-                color:
-                  active === value ? "var(--accent)" : "var(--text-muted)",
-                fontFamily: "'DM Mono', monospace",
-                fontSize: isMobile ? 10 : 11,
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                cursor: "pointer",
-                transition: "color 0.2s",
-                whiteSpace: "nowrap",
-                fontWeight: active === value ? 600 : 400,
-              }}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <section
-        style={{
-          maxWidth: 1100,
-          margin: "0 auto",
-          padding: isMobile ? "32px 16px 60px" : "48px 24px 80px",
-        }}
-      >
-        {filtered.length === 0 ? (
-          <p
+        {/* Button */}
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <a
+            href={driveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
-              color: "var(--text-muted)",
-              padding: isMobile ? "40px 0" : "40px 0",
-              textAlign: "center",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 10,
+              padding: isMobile ? "16px 32px" : "18px 44px",
+              backgroundColor: "var(--accent)",
+              color: "var(--bg)",
+              textDecoration: "none",
+              fontSize: 14,
+              fontWeight: 500,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              borderRadius: 2,
+              boxShadow: "0 6px 20px rgba(255, 141, 120, 0.4)",
+              transition: "transform 0.2s ease, box-shadow 0.2s ease",
             }}
           >
-            No projects in this category yet.
-          </p>
-        ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            {filtered.map((project) => (
-              <ProjectCard key={project.id} project={project} isMobile={isMobile} />
-            ))}
-          </div>
-        )}
+            <span>Open in Google Drive</span>
+            <ArrowUpRight size={18} />
+          </a>
+        </div>
       </section>
     </div>
   );

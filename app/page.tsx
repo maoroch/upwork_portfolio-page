@@ -1,7 +1,6 @@
 import Link from "next/link";
-import { ArrowRight, Zap, Database, Bot, Layers } from "lucide-react";
-import { getFeaturedProjects, getFeaturedArticles } from "@/lib/data";
-import ProjectCard from "@/components/ProjectCard";
+import { ArrowRight, ArrowUpRight, Zap, Database, Bot, Layers } from "lucide-react";
+import { getFeaturedArticles } from "@/lib/data";
 import ArticleCardHome from "@/components/ArticleCard";
 import HomeAbout from "@/components/HomeAbout";
 
@@ -13,13 +12,12 @@ const skills = [
 ];
 
 export default function HomePage() {
-  const projects = getFeaturedProjects();
   const articles = getFeaturedArticles();
 
   return (
     <div style={{ paddingTop: 60, position: "relative" }}>
-          
-    <div className="hero-grid-bg" />
+
+      <div className="hero-grid-bg" />
 
 
       {/* Hero */}
@@ -40,12 +38,12 @@ export default function HomePage() {
           <Link href="/portfolio" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 24px", backgroundColor: "var(--accent)", color: "var(--bg)", textDecoration: "none", fontSize: 13, fontWeight: 500, letterSpacing: "0.04em", textTransform: "uppercase", borderRadius: 2 }}>
             View Work <ArrowRight size={14} />
           </Link>
-          <Link href="https://www.upwork.com/freelancers/salimovilyas" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 24px", border: "1px solid var(--border-light)", color: "var(--text-muted)", textDecoration: "none", fontSize: 13, letterSpacing: "0.04em", textTransform: "uppercase", borderRadius: 2 }}>
+          <Link href="mailto:contact@ilyas-ones.com" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 24px", border: "1px solid var(--border-light)", color: "var(--text-muted)", textDecoration: "none", fontSize: 13, letterSpacing: "0.04em", textTransform: "uppercase", borderRadius: 2 }}>
             Get in Touch
           </Link>
         </div>
         <div className="animate-fade-up delay-5" style={{ display: "flex", gap: 48, marginTop: 80, paddingTop: 40, borderTop: "1px solid var(--border)", flexWrap: "wrap" }}>
-          {[{ value: "4+", label: "Years building" }, { value: "20+", label: "Projects shipped" }, { value: "3", label: "Hackathon wins" }, { value: "90+", label: "Lighthouse avg" }].map(({ value, label }) => (
+          {[{ value: "4+", label: "Years building" }, { value: "20+", label: "Projects shipped" }, { value: "90+", label: "Lighthouse avg" }].map(({ value, label }) => (
             <div key={label}>
               <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 36, color: "var(--text)", lineHeight: 1 }}>{value}</div>
               <div style={{ color: "var(--text-muted)", fontSize: 12, marginTop: 6, letterSpacing: "0.04em", textTransform: "uppercase" }}>{label}</div>
@@ -77,19 +75,121 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured Projects */}
+      {/* Featured Projects Showcase */}
       <section style={{ maxWidth: 1100, margin: "0 auto", padding: "80px 24px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 48, flexWrap: "wrap", gap: 16 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 40, flexWrap: "wrap", gap: 16 }}>
           <div>
             <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 8 }}>Selected Work</p>
-            <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 36, color: "var(--text)" }}>Featured Projects</h2>
+            <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: "clamp(28px, 5vw, 36px)", color: "var(--text)" }}>Featured Projects & Case Studies</h2>
           </div>
-          <Link href="/portfolio" style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "var(--accent)", textDecoration: "none", fontSize: 13, letterSpacing: "0.04em", textTransform: "uppercase" }}>
-            All Projects <ArrowRight size={14} />
+          <Link href="/portfolio" style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "var(--accent)", textDecoration: "none", fontSize: 13, letterSpacing: "0.04em", textTransform: "uppercase", fontWeight: 500 }}>
+            Portfolio Page <ArrowRight size={14} />
           </Link>
         </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-          {projects.map((project) => <ProjectCard key={project.id} project={project} />)}
+
+        {/* 3 Interactive Feature Cards */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 24 }}>
+          {/* Card 1: CRM & Enterprise Systems */}
+          <a
+            href="https://drive.google.com/drive/folders/1CBxmk25gXMsC4EiyScdOBU2blu70qXvi?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              backgroundColor: "var(--bg-2)",
+              border: "1px solid var(--border)",
+              borderRadius: 4,
+              padding: "32px 28px",
+              textDecoration: "none",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            <div>
+              <div style={{ width: 44, height: 44, borderRadius: 2, backgroundColor: "var(--accent-bg)", border: "1px solid var(--accent-dim)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 24 }}>
+                <Database size={20} color="var(--accent)" />
+              </div>
+              <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Category 01</span>
+              <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 22, color: "var(--text)", marginTop: 6, marginBottom: 12 }}>CRM & SaaS Platforms</h3>
+              <p style={{ color: "var(--text-muted)", fontSize: 14, lineHeight: 1.65, marginBottom: 28 }}>
+                Custom pipeline automation, real-time sync, high-volume data models, and analytics dashboards.
+              </p>
+            </div>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, color: "var(--accent)", fontSize: 12, fontFamily: "'DM Mono', monospace", textTransform: "uppercase", fontWeight: 500 }}>
+              <span>View in Google Drive</span>
+              <ArrowUpRight size={15} />
+            </div>
+          </a>
+
+          {/* Card 2: AI Products & Assistants */}
+          <a
+            href="https://drive.google.com/drive/folders/1CBxmk25gXMsC4EiyScdOBU2blu70qXvi?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              backgroundColor: "var(--bg-2)",
+              border: "1px solid var(--border)",
+              borderRadius: 4,
+              padding: "32px 28px",
+              textDecoration: "none",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            <div>
+              <div style={{ width: 44, height: 44, borderRadius: 2, backgroundColor: "var(--accent-bg)", border: "1px solid var(--accent-dim)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 24 }}>
+                <Bot size={20} color="var(--accent)" />
+              </div>
+              <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Category 02</span>
+              <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 22, color: "var(--text)", marginTop: 6, marginBottom: 12 }}>AI Systems & Workflows</h3>
+              <p style={{ color: "var(--text-muted)", fontSize: 14, lineHeight: 1.65, marginBottom: 28 }}>
+                LLM-powered assistants, automated content pipelines, agentic workflows, and structured data outputs.
+              </p>
+            </div>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, color: "var(--accent)", fontSize: 12, fontFamily: "'DM Mono', monospace", textTransform: "uppercase", fontWeight: 500 }}>
+              <span>View in Google Drive</span>
+              <ArrowUpRight size={15} />
+            </div>
+          </a>
+
+          {/* Card 3: Full-Stack Architecture */}
+          <a
+            href="https://drive.google.com/drive/folders/1CBxmk25gXMsC4EiyScdOBU2blu70qXvi?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              backgroundColor: "var(--bg-2)",
+              border: "1px solid var(--border)",
+              borderRadius: 4,
+              padding: "32px 28px",
+              textDecoration: "none",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            <div>
+              <div style={{ width: 44, height: 44, borderRadius: 2, backgroundColor: "var(--accent-bg)", border: "1px solid var(--accent-dim)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 24 }}>
+                <Layers size={20} color="var(--accent)" />
+              </div>
+              <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Category 03</span>
+              <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 22, color: "var(--text)", marginTop: 6, marginBottom: 12 }}>Full-Stack Web Apps</h3>
+              <p style={{ color: "var(--text-muted)", fontSize: 14, lineHeight: 1.65, marginBottom: 28 }}>
+                Next.js 16 applications, API contracts, SSR optimization, video demos, and case study documentation.
+              </p>
+            </div>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, color: "var(--accent)", fontSize: 12, fontFamily: "'DM Mono', monospace", textTransform: "uppercase", fontWeight: 500 }}>
+              <span>View in Google Drive</span>
+              <ArrowUpRight size={15} />
+            </div>
+          </a>
         </div>
       </section>
 
@@ -118,7 +218,7 @@ export default function HomePage() {
           <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 16 }}>Open to work</p>
           <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: "clamp(28px, 4vw, 48px)", color: "var(--text)", marginBottom: 16, letterSpacing: "-0.02em" }}>Got a project in mind?</h2>
           <p style={{ color: "var(--text-muted)", fontSize: 15, maxWidth: 400, margin: "0 auto 36px" }}>I&apos;m available for freelance projects, consulting, and long-term collaboration.</p>
-          <Link href="https://www.upwork.com/freelancers/salimovilyas" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", backgroundColor: "var(--accent)", color: "var(--bg)", textDecoration: "none", fontSize: 13, fontWeight: 500, letterSpacing: "0.04em", textTransform: "uppercase", borderRadius: 2 }}>
+          <Link href="mailto:contact@ilyas-ones.com" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", backgroundColor: "var(--accent)", color: "var(--bg)", textDecoration: "none", fontSize: 13, fontWeight: 500, letterSpacing: "0.04em", textTransform: "uppercase", borderRadius: 2 }}>
             Let&apos;s Talk <ArrowRight size={14} />
           </Link>
         </div>

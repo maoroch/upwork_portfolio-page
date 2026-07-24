@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/upwork/Footer";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: {
-    default: "Ilyas Dev — Full Stack Developer",
-    template: "%s | Ilyas Dev",
+    default: "Ilyas-ones — Full Stack Developer",
+    template: "%s | Ilyas-ones",
   },
   description: "Full Stack Developer focused on performance, CRM systems, AI-powered products, and product architecture.",
   keywords: ["Full Stack Developer", "Next.js", "React", "CRM", "AI", "Node.js"],

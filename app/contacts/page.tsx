@@ -56,7 +56,7 @@ export default function ContactPage() {
         <div style={{ border: "1px solid #1a3a24", backgroundColor: "var(--green-bg)", padding: "20px 24px", display: "flex", alignItems: "center", gap: 12 }}>
           <span style={{ display: "inline-block", width: 8, height: 8, borderRadius: "50%", backgroundColor: "var(--green)", flexShrink: 0, boxShadow: "0 0 8px var(--green)" }} />
           <p style={{ color: "var(--text-muted)", fontSize: 13 }}>
-            <strong style={{ color: "var(--text)", fontWeight: 500 }}>Currently available</strong> — open to new projects. Typical engagement: 3–6 months.
+            <strong style={{ color: "var(--text)", fontWeight: 500 }}>Currently available</strong> — open to new projects.
           </p>
         </div>
       </div>

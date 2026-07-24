@@ -10,6 +10,7 @@ const links = [
   { href: "/portfolio", label: "Portfolio" },
   { href: "/articles", label: "Articles" },
   { href: "/about", label: "About" },
+  { href: "/contacts", label: "Contacts" },
 ];
 
 export default function Navbar() {
@@ -22,7 +23,7 @@ export default function Navbar() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };
-    
+
     const handleResize = () => {
       setIsMobile(window.innerWidth < 1024);
     };
@@ -32,7 +33,7 @@ export default function Navbar() {
 
     window.addEventListener("scroll", handleScroll);
     window.addEventListener("resize", handleResize);
-    
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
@@ -93,7 +94,7 @@ export default function Navbar() {
               (e.target as HTMLElement).style.color = "var(--text)";
             }}
           >
-            Ilyas<span style={{ color: "var(--accent)" }}>.</span>dev
+            Ilyas-<span style={{ color: "var(--accent)" }}>ones</span>
           </span>
         </Link>
 
