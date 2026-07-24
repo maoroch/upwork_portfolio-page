@@ -183,37 +183,48 @@ export default function Footer() {
 
       {/* Mobile Navigation - shown only on mobile */}
       {isMobile && (
-        <nav style={{
-          display: "flex",
-          gap: 16,
-          marginTop: 32,
-          paddingTop: 32,
-          borderTop: "1px solid var(--border)",
-          flexWrap: "wrap",
-          justifyContent: "flex-start",
-        }}>
+        <nav
+          style={{
+            display: "flex",
+            gap: 10,
+            marginTop: 32,
+            paddingTop: 24,
+            borderTop: "1px solid var(--border)",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "flex-start",
+          }}
+        >
           {navLinks.map(({ key, href }) => (
             <Link
               key={key}
               href={href}
               style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: 36,
+                padding: "0 16px",
                 color: "var(--text-muted)",
                 textDecoration: "none",
                 fontSize: 11,
+                fontWeight: 600,
                 letterSpacing: "0.06em",
                 textTransform: "uppercase",
-                transition: "all 0.3s ease",
-                fontWeight: 500,
-                padding: "6px 12px",
                 borderRadius: 4,
                 backgroundColor: "var(--bg-2)",
+                border: "1px solid var(--border-light)",
+                transition: "all 0.2s ease",
+                lineHeight: 1,
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget).style.backgroundColor = "var(--bg-3)";
+                (e.currentTarget).style.backgroundColor = "var(--accent-bg)";
+                (e.currentTarget).style.borderColor = "var(--accent-dim)";
                 (e.currentTarget).style.color = "var(--accent)";
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget).style.backgroundColor = "var(--bg-2)";
+                (e.currentTarget).style.borderColor = "var(--border-light)";
                 (e.currentTarget).style.color = "var(--text-muted)";
               }}
             >
