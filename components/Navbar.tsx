@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Menu, X, Globe } from "lucide-react";
+import { Menu, X, Globe, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 const rawLinks = [
@@ -30,7 +30,6 @@ export default function Navbar() {
       setIsMobile(window.innerWidth < 1024);
     };
 
-    // Initial check
     handleResize();
 
     window.addEventListener("scroll", handleScroll);
@@ -42,14 +41,12 @@ export default function Navbar() {
     };
   }, []);
 
-  // Close menu when window is resized to desktop
   useEffect(() => {
     if (!isMobile && open) {
       setOpen(false);
     }
   }, [isMobile, open]);
 
-  // Exclude "Articles" link in Russian version as requested
   const links = rawLinks.filter((link) => !(lang === "ru" && link.key === "articles"));
 
   const headerStyle = {
@@ -58,11 +55,11 @@ export default function Navbar() {
     left: 0,
     right: 0,
     zIndex: 100,
-    borderBottom: scrolled ? "1px solid var(--border)" : "1px solid transparent",
-    backgroundColor: scrolled ? "rgba(250, 247, 242, 0.98)" : "rgba(250, 247, 242, 0.80)",
+    borderBottom: scrolled || open ? "1px solid var(--border)" : "1px solid transparent",
+    backgroundColor: scrolled || open ? "rgba(250, 247, 242, 0.98)" : "rgba(250, 247, 242, 0.82)",
     backdropFilter: "blur(16px)",
     WebkitBackdropFilter: "blur(16px)",
-    boxShadow: scrolled ? "0 4px 12px rgba(0, 0, 0, 0.08)" : "none",
+    boxShadow: scrolled ? "0 4px 16px rgba(0, 0, 0, 0.06)" : "none",
     transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   };
 
@@ -84,36 +81,22 @@ export default function Navbar() {
           <span
             style={{
               fontFamily: "'DM Serif Display', serif",
-              fontSize: 24,
+              fontSize: isMobile ? 22 : 24,
               fontWeight: 600,
               color: "var(--text)",
               letterSpacing: "-0.02em",
               transition: "all 0.3s ease",
-            }}
-            onMouseEnter={(e) => {
-              (e.target as HTMLElement).style.transform = "scale(1.05)";
-              (e.target as HTMLElement).style.color = "var(--accent)";
-            }}
-            onMouseLeave={(e) => {
-              (e.target as HTMLElement).style.transform = "scale(1)";
-              (e.target as HTMLElement).style.color = "var(--text)";
             }}
           >
             Ilyas-<span style={{ color: "var(--accent)" }}>ones</span>
           </span>
         </Link>
 
-        {/* Right side items */}
-        <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
+        {/* Right side controls */}
+        <div style={{ display: "flex", alignItems: "center", gap: isMobile ? 10 : 32 }}>
           {/* Desktop links */}
           {!isMobile && (
-            <div
-              style={{
-                display: "flex",
-                gap: 32,
-                alignItems: "center",
-              }}
-            >
+            <div style={{ display: "flex", gap: 32, alignItems: "center" }}>
               {links.map((link) => {
                 const active = pathname === link.href;
                 return (
@@ -172,9 +155,11 @@ export default function Navbar() {
             style={{
               display: "inline-flex",
               alignItems: "center",
+              justifyContent: "center",
               gap: 6,
-              padding: "6px 12px",
-              borderRadius: 2,
+              height: isMobile ? 38 : 34,
+              padding: isMobile ? "0 12px" : "0 12px",
+              borderRadius: 4,
               border: "1px solid var(--border-light)",
               backgroundColor: "var(--bg-2)",
               color: "var(--text)",
@@ -192,77 +177,83 @@ export default function Navbar() {
             <span>{lang === "en" ? "EN" : "RU"}</span>
           </button>
 
-          {/* Mobile toggle */}
+          {/* Mobile hamburger menu toggle button */}
           {isMobile && (
             <button
               onClick={() => setOpen(!open)}
               style={{
-                background: "none",
-                border: "none",
-                color: open ? "var(--accent)" : "var(--text-muted)",
+                width: 38,
+                height: 38,
+                borderRadius: 4,
+                border: "1px solid var(--border-light)",
+                backgroundColor: open ? "var(--accent-bg)" : "var(--bg-2)",
+                color: open ? "var(--accent)" : "var(--text)",
                 cursor: "pointer",
-                padding: "8px",
-                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                borderRadius: "6px",
-                backgroundColor: open ? "rgba(255, 141, 120, 0.1)" : "transparent",
+                transition: "all 0.2s ease",
               }}
               aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}
             >
-              {open ? <X size={22} strokeWidth={2.5} /> : <Menu size={22} strokeWidth={2.5} />}
+              {open ? <X size={20} strokeWidth={2.5} /> : <Menu size={20} strokeWidth={2.5} />}
             </button>
           )}
         </div>
       </nav>
 
-      {/* Mobile menu */}
+      {/* Mobile Menu Dropdown */}
       {isMobile && open && (
         <div
           style={{
             borderTop: "1px solid var(--border)",
-            backgroundColor: "var(--bg)",
-            padding: "16px 24px 24px",
-            animation: "slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-            maxHeight: "calc(100vh - 70px)",
-            overflowY: "auto",
+            backgroundColor: "rgba(250, 247, 242, 0.98)",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+            padding: "16px 20px 24px",
+            animation: "fadeInDown 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+            boxShadow: "0 12px 24px rgba(0, 0, 0, 0.06)",
           }}
         >
-          {links.map((link, index) => {
-            const active = pathname === link.href;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setOpen(false)}
-                style={{
-                  display: "block",
-                  textDecoration: "none",
-                  padding: "14px 12px",
-                  fontSize: 13,
-                  fontWeight: 600,
-                  color: active ? "var(--accent)" : "var(--text-muted)",
-                  borderRadius: "6px",
-                  letterSpacing: "0.06em",
-                  textTransform: "uppercase",
-                  transition: "all 0.3s ease",
-                  marginBottom: index < links.length - 1 ? "4px" : "0",
-                  backgroundColor: active ? "rgba(255, 141, 120, 0.1)" : "transparent",
-                }}
-              >
-                {t.nav[link.key]}
-              </Link>
-            );
-          })}
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            {links.map((link) => {
+              const active = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    textDecoration: "none",
+                    padding: "12px 16px",
+                    fontSize: 13,
+                    fontWeight: active ? 600 : 500,
+                    color: active ? "var(--accent)" : "var(--text)",
+                    borderRadius: 4,
+                    letterSpacing: "0.06em",
+                    textTransform: "uppercase",
+                    backgroundColor: active ? "var(--accent-bg)" : "transparent",
+                    borderLeft: active ? "3px solid var(--accent)" : "3px solid transparent",
+                    transition: "all 0.2s ease",
+                  }}
+                >
+                  <span>{t.nav[link.key]}</span>
+                  {active && <ArrowRight size={14} color="var(--accent)" />}
+                </Link>
+              );
+            })}
+          </div>
         </div>
       )}
       <style>{`
-        @keyframes slideDown {
+        @keyframes fadeInDown {
           from {
             opacity: 0;
-            transform: translateY(-10px);
+            transform: translateY(-8px);
           }
           to {
             opacity: 1;
@@ -273,4 +264,5 @@ export default function Navbar() {
     </header>
   );
 }
+
 
