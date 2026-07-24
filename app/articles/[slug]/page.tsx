@@ -12,7 +12,24 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const article = getArticleBySlug(slug);
   if (!article) return {};
-  return { title: article.title, description: article.excerpt };
+  return {
+    title: article.title,
+    description: article.excerpt,
+    alternates: {
+      canonical: `/articles/${slug}`,
+      languages: {
+        "en": `/articles/${slug}`,
+        "x-default": `/articles/${slug}`,
+      },
+    },
+    openGraph: {
+      title: article.title,
+      description: article.excerpt,
+      type: "article",
+      publishedTime: article.publishedAt,
+      tags: article.tags,
+    },
+  };
 }
 
 function renderMarkdown(content: string): string {

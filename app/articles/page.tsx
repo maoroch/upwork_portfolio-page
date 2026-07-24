@@ -5,6 +5,13 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Articles",
   description: "Technical articles on frontend architecture, backend design, CRM systems, AI integration, and product thinking.",
+  alternates: {
+    canonical: "/articles",
+    languages: {
+      "en": "/articles",
+      "x-default": "/articles",
+    },
+  },
 };
 
 export default function ArticlesPage() {

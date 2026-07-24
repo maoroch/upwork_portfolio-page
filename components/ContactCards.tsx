@@ -2,6 +2,7 @@
 
 import { Mail, ArrowUpRight } from "lucide-react";
 import { useState } from "react";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 function GithubIcon({ size = 16 }: { size?: number }) {
   return (
@@ -30,14 +31,15 @@ function LinkedinIcon({ size = 16 }: { size?: number }) {
   );
 }
 
-const contacts = [
-  { icon: TelegramIcon, label: "Telegram", value: "@Ilyas_ones", href: "https://t.me/Ilyas_ones", desc: "Best for quick messages. Usually respond within a few hours." },
-  { icon: LinkedinIcon, label: "LinkedIn", value: "salimovilyass", href: "https://www.linkedin.com/in/salimovilyass", desc: "Professional background, work history, and recommendations." },
-  { icon: GithubIcon, label: "GitHub", value: "maoroch", href: "https://github.com/maoroch", desc: "Open source projects, contributions, and code style." },
-  { icon: Mail, label: "Email", value: "contact@ilyas-ones.com", href: "mailto:contact@ilyas-ones.com", desc: "For detailed proposals, NDA discussions, and formal inquiries." },
-];
+interface ContactCardProps {
+  icon: React.ComponentType<{ size?: number; color?: string }>;
+  label: string;
+  value: string;
+  href: string;
+  desc: string;
+}
 
-function ContactCard({ icon: Icon, label, value, href, desc }: (typeof contacts)[0]) {
+function ContactCard({ icon: Icon, label, value, href, desc }: ContactCardProps) {
   const [hovered, setHovered] = useState(false);
   return (
     <a href={href} target={href.startsWith("mailto") ? undefined : "_blank"} rel="noopener noreferrer" style={{ textDecoration: "none" }}>
@@ -53,7 +55,7 @@ function ContactCard({ icon: Icon, label, value, href, desc }: (typeof contacts)
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
-          <div style={{ width: 36, height: 36, borderRadius: 2, backgroundColor: "var(--accent-bg)", border: "1px solid var(--accent-dim)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ width: 36, height: 36, borderRadius: 2, backgroundColor: "var(--accent-bg)", border: "1px solid var(--accent-dim)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--accent)" }}>
             <Icon size={16} color="var(--accent)" />
           </div>
           <ArrowUpRight size={14} color={hovered ? "var(--accent)" : "var(--text-subtle)"} style={{ transition: "color 0.2s" }} />
@@ -67,9 +69,19 @@ function ContactCard({ icon: Icon, label, value, href, desc }: (typeof contacts)
 }
 
 export default function ContactCards() {
+  const { t } = useLanguage();
+
+  const contacts = [
+    { icon: TelegramIcon, label: "Telegram", value: "@Ilyas_ones", href: "https://t.me/Ilyas_ones", desc: t.contacts.telegramDesc },
+    { icon: LinkedinIcon, label: "LinkedIn", value: "salimovilyass", href: "https://www.linkedin.com/in/salimovilyass", desc: t.contacts.linkedinDesc },
+    { icon: GithubIcon, label: "GitHub", value: "maoroch", href: "https://github.com/maoroch", desc: t.contacts.githubDesc },
+    { icon: Mail, label: "Email", value: "contact@ilyas-ones.com", href: "mailto:contact@ilyas-ones.com", desc: t.contacts.emailDesc },
+  ];
+
   return (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 2, backgroundColor: "var(--border)", border: "1px solid var(--border)" }}>
       {contacts.map((c) => <ContactCard key={c.label} {...c} />)}
     </div>
   );
 }
+

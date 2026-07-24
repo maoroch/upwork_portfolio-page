@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ArrowUpRight } from "lucide-react";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 function GoogleDriveBackground() {
   return (
@@ -27,6 +28,7 @@ function GoogleDriveBackground() {
 }
 
 export default function PortfolioPage() {
+  const { t } = useLanguage();
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -106,7 +108,7 @@ export default function PortfolioPage() {
             zIndex: 1,
           }}
         >
-          Google Drive Repository
+          {t.portfolio.badge}
         </span>
 
         {/* Title */}
@@ -124,7 +126,7 @@ export default function PortfolioPage() {
             zIndex: 1,
           }}
         >
-          Projects Portfolio
+          {t.portfolio.title}
         </h1>
 
         {/* Description */}
@@ -139,7 +141,7 @@ export default function PortfolioPage() {
             zIndex: 1,
           }}
         >
-          All active projects, case studies, video demos, and source files are stored and organized in my public Google Drive repository.
+          {t.portfolio.desc}
         </p>
 
         {/* Button */}
@@ -165,7 +167,7 @@ export default function PortfolioPage() {
               transition: "transform 0.2s ease, box-shadow 0.2s ease",
             }}
           >
-            <span>Open in Google Drive</span>
+            <span>{t.portfolio.button}</span>
             <ArrowUpRight size={18} />
           </a>
         </div>

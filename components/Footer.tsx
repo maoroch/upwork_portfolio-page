@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { Mail } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 function GithubIcon({ size = 18 }: { size?: number }) {
   return (
@@ -37,14 +38,15 @@ const socials = [
   { icon: Mail, label: "Email", href: "mailto:contact@ilyas-ones.com" },
 ];
 
-const navLinks = [
-  { label: "Portfolio", href: "/portfolio" },
-  { label: "Articles", href: "/articles" },
-  { label: "About", href: "/about" },
-  { label: "Contacts", href: "/contacts" },
+const rawNavLinks = [
+  { key: "portfolio" as const, href: "/portfolio" },
+  { key: "articles" as const, href: "/articles" },
+  { key: "about" as const, href: "/about" },
+  { key: "contacts" as const, href: "/contacts" },
 ];
 
 export default function Footer() {
+  const { lang, t } = useLanguage();
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -56,6 +58,10 @@ export default function Footer() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  const navLinks = rawNavLinks.filter(
+    (link) => !(lang === "ru" && link.key === "articles")
+  );
 
   return (
     <footer
@@ -90,7 +96,7 @@ export default function Footer() {
               transition: "all 0.3s ease",
             }}
           >
-            Ilyas<span style={{ color: "var(--accent)" }}>.</span>dev
+            Ilyas-<span style={{ color: "var(--accent)" }}>ones</span>
           </span>
           <p
             style={{
@@ -101,16 +107,16 @@ export default function Footer() {
               textTransform: "uppercase",
             }}
           >
-            Full Stack Developer · {new Date().getFullYear()}
+            {t.footer.subtitle} · {new Date().getFullYear()}
           </p>
         </div>
 
         {/* Navigation Links - hidden on mobile, shown on desktop */}
         {!isMobile && (
           <nav style={{ display: "flex", gap: 24, alignItems: "center", flex: "1 1 auto", justifyContent: "center" }}>
-            {navLinks.map(({ label, href }) => (
+            {navLinks.map(({ key, href }) => (
               <Link
-                key={label}
+                key={key}
                 href={href}
                 style={{
                   color: "var(--text-muted)",
@@ -130,7 +136,7 @@ export default function Footer() {
                   (e.target as HTMLElement).style.color = "var(--text-muted)";
                 }}
               >
-                {label}
+                {t.nav[key]}
               </Link>
             ))}
           </nav>
@@ -186,9 +192,9 @@ export default function Footer() {
           flexWrap: "wrap",
           justifyContent: "flex-start",
         }}>
-          {navLinks.map(({ label, href }) => (
+          {navLinks.map(({ key, href }) => (
             <Link
-              key={label}
+              key={key}
               href={href}
               style={{
                 color: "var(--text-muted)",
@@ -211,7 +217,7 @@ export default function Footer() {
                 (e.currentTarget).style.color = "var(--text-muted)";
               }}
             >
-              {label}
+              {t.nav[key]}
             </Link>
           ))}
         </nav>
@@ -220,3 +226,4 @@ export default function Footer() {
     </footer>
   );
 }
+

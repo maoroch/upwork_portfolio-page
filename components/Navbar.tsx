@@ -3,18 +3,20 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Globe } from "lucide-react";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
-const links = [
-  { href: "/", label: "Home" },
-  { href: "/portfolio", label: "Portfolio" },
-  { href: "/articles", label: "Articles" },
-  { href: "/about", label: "About" },
-  { href: "/contacts", label: "Contacts" },
+const rawLinks = [
+  { href: "/", key: "home" as const },
+  { href: "/portfolio", key: "portfolio" as const },
+  { href: "/articles", key: "articles" as const },
+  { href: "/about", key: "about" as const },
+  { href: "/contacts", key: "contacts" as const },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { lang, toggleLang, t } = useLanguage();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -46,6 +48,9 @@ export default function Navbar() {
       setOpen(false);
     }
   }, [isMobile, open]);
+
+  // Exclude "Articles" link in Russian version as requested
+  const links = rawLinks.filter((link) => !(lang === "ru" && link.key === "articles"));
 
   const headerStyle = {
     position: "fixed" as const,
@@ -98,108 +103,122 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop links - видны только на больших экранах (1024px+) */}
-        {!isMobile && (
-          <div
-            style={{
-              display: "flex",
-              gap: 40,
-              alignItems: "center",
-            }}
-          >
-            {links.map((link) => {
-              const active = pathname === link.href;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  style={{
-                    textDecoration: "none",
-                    fontSize: 12,
-                    fontWeight: 600,
-                    letterSpacing: "0.06em",
-                    textTransform: "uppercase",
-                    color: active ? "var(--accent)" : "var(--text-muted)",
-                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                    position: "relative",
-                    paddingBottom: 4,
-                    background: active
-                      ? "linear-gradient(to right, var(--accent), transparent)"
-                      : "none",
-                    WebkitBackgroundClip: active ? "text" : "unset",
-                    WebkitTextFillColor: active ? "transparent" : "unset",
-                  }}
-                  onMouseEnter={(e) => {
-                    const element = e.target as HTMLElement;
-                    if (!active) {
-                      element.style.color = "var(--text)";
-                      element.style.transform = "translateY(-2px)";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    const element = e.target as HTMLElement;
-                    if (!active) {
-                      element.style.color = "var(--text-muted)";
-                      element.style.transform = "translateY(0)";
-                    }
-                  }}
-                >
-                  {link.label}
-                  {active && (
-                    <span
-                      style={{
-                        position: "absolute",
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        height: "2px",
-                        background: "linear-gradient(90deg, var(--accent), transparent)",
-                        borderRadius: "2px",
-                      }}
-                    />
-                  )}
-                </Link>
-              );
-            })}
-          </div>
-        )}
+        {/* Right side items */}
+        <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
+          {/* Desktop links */}
+          {!isMobile && (
+            <div
+              style={{
+                display: "flex",
+                gap: 32,
+                alignItems: "center",
+              }}
+            >
+              {links.map((link) => {
+                const active = pathname === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    style={{
+                      textDecoration: "none",
+                      fontSize: 12,
+                      fontWeight: 600,
+                      letterSpacing: "0.06em",
+                      textTransform: "uppercase",
+                      color: active ? "var(--accent)" : "var(--text-muted)",
+                      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                      position: "relative",
+                      paddingBottom: 4,
+                    }}
+                    onMouseEnter={(e) => {
+                      const element = e.target as HTMLElement;
+                      if (!active) {
+                        element.style.color = "var(--text)";
+                        element.style.transform = "translateY(-2px)";
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      const element = e.target as HTMLElement;
+                      if (!active) {
+                        element.style.color = "var(--text-muted)";
+                        element.style.transform = "translateY(0)";
+                      }
+                    }}
+                  >
+                    {t.nav[link.key]}
+                    {active && (
+                      <span
+                        style={{
+                          position: "absolute",
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          height: "2px",
+                          background: "linear-gradient(90deg, var(--accent), transparent)",
+                          borderRadius: "2px",
+                        }}
+                      />
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          )}
 
-        {/* Mobile toggle - видна только на мобильных и планшетных (< 1024px) */}
-        {isMobile && (
+          {/* Language Toggle Button */}
           <button
-            onClick={() => setOpen(!open)}
+            onClick={toggleLang}
             style={{
-              background: "none",
-              border: "none",
-              color: open ? "var(--accent)" : "var(--text-muted)",
-              cursor: "pointer",
-              padding: "8px",
-              transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-              display: "flex",
+              display: "inline-flex",
               alignItems: "center",
-              justifyContent: "center",
-              borderRadius: "6px",
-              backgroundColor: open ? "rgba(255, 141, 120, 0.1)" : "transparent",
+              gap: 6,
+              padding: "6px 12px",
+              borderRadius: 2,
+              border: "1px solid var(--border-light)",
+              backgroundColor: "var(--bg-2)",
+              color: "var(--text)",
+              fontFamily: "'DM Mono', monospace",
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              cursor: "pointer",
+              transition: "all 0.2s ease",
             }}
-            onMouseEnter={(e) => {
-              (e.target as HTMLElement).style.backgroundColor = "rgba(255, 141, 120, 0.1)";
-              (e.target as HTMLElement).style.color = "var(--accent)";
-              (e.target as HTMLElement).style.transform = "scale(1.1)";
-            }}
-            onMouseLeave={(e) => {
-              (e.target as HTMLElement).style.backgroundColor = open ? "rgba(255, 141, 120, 0.1)" : "transparent";
-              (e.target as HTMLElement).style.color = open ? "var(--accent)" : "var(--text-muted)";
-              (e.target as HTMLElement).style.transform = "scale(1)";
-            }}
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
+            title={lang === "en" ? "Switch to Russian" : "Переключить на английский"}
           >
-            {open ? <X size={22} strokeWidth={2.5} /> : <Menu size={22} strokeWidth={2.5} />}
+            <Globe size={13} color="var(--accent)" />
+            <span>{lang === "en" ? "EN" : "RU"}</span>
           </button>
-        )}
+
+          {/* Mobile toggle */}
+          {isMobile && (
+            <button
+              onClick={() => setOpen(!open)}
+              style={{
+                background: "none",
+                border: "none",
+                color: open ? "var(--accent)" : "var(--text-muted)",
+                cursor: "pointer",
+                padding: "8px",
+                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "6px",
+                backgroundColor: open ? "rgba(255, 141, 120, 0.1)" : "transparent",
+              }}
+              aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+            >
+              {open ? <X size={22} strokeWidth={2.5} /> : <Menu size={22} strokeWidth={2.5} />}
+            </button>
+          )}
+        </div>
       </nav>
 
-      {/* Mobile menu - видна только на мобильных и планшетных, когда меню открыто */}
+      {/* Mobile menu */}
       {isMobile && open && (
         <div
           style={{
@@ -231,26 +250,9 @@ export default function Navbar() {
                   transition: "all 0.3s ease",
                   marginBottom: index < links.length - 1 ? "4px" : "0",
                   backgroundColor: active ? "rgba(255, 141, 120, 0.1)" : "transparent",
-                  animation: `slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.05}s both`,
-                }}
-                onMouseEnter={(e) => {
-                  const element = e.target as HTMLElement;
-                  if (!active) {
-                    element.style.backgroundColor = "rgba(255, 141, 120, 0.05)";
-                    element.style.color = "var(--text)";
-                    element.style.paddingLeft = "16px";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  const element = e.target as HTMLElement;
-                  if (!active) {
-                    element.style.backgroundColor = "transparent";
-                    element.style.color = "var(--text-muted)";
-                    element.style.paddingLeft = "12px";
-                  }
                 }}
               >
-                {link.label}
+                {t.nav[link.key]}
               </Link>
             );
           })}
@@ -267,18 +269,8 @@ export default function Navbar() {
             transform: translateY(0);
           }
         }
-        
-        @keyframes slideIn {
-          from {
-            opacity: 0;
-            transform: translateX(-16px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
       `}</style>
     </header>
   );
 }
+

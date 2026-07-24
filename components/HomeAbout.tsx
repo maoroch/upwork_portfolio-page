@@ -1,7 +1,10 @@
 'use client'
 import Image from "next/image";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 export default function HomeAbout() {
+  const { lang, t } = useLanguage();
+
   return (
     <section
       style={{
@@ -130,7 +133,7 @@ export default function HomeAbout() {
             marginBottom: 20,
           }}
         >
-          About
+          {t.about.tag}
         </p>
 
         <h2
@@ -155,9 +158,7 @@ export default function HomeAbout() {
             marginBottom: 28,
           }}
         >
-          Full Stack Developer based in Almaty. I design and build CRM systems,
-          AI-powered products, and high-performance web applications — from
-          architecture to production.
+          {t.about.bio1}
         </p>
 
         <div
@@ -169,9 +170,9 @@ export default function HomeAbout() {
           }}
         >
           {[
-            { label: "Stack", value: "Next.js · Node.js · TypeScript · PostgreSQL" },
-            { label: "Focus", value: "CRM · AI Integration · Performance" },
-            { label: "Status", value: "Open to freelance & collaboration" },
+            { label: lang === "ru" ? "Стек" : "Stack", value: "Next.js · Node.js · TypeScript · PostgreSQL" },
+            { label: lang === "ru" ? "Фокус" : "Focus", value: "CRM · AI Integration · Performance" },
+            { label: lang === "ru" ? "Статус" : "Status", value: t.hero.status },
           ].map(({ label, value }) => (
             <div
               key={label}

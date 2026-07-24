@@ -1,22 +1,9 @@
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
-import { ArrowRight, Icon, Link2 } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import styles from "./about.module.css";
-
-export const metadata: Metadata = {
-  title: "About",
-  description: "Full Stack Developer focused on CRM systems, AI products, and performance.",
-};
-
-const timeline = [
-  { year: "2021", event: "Started working with JavaScript and PHP. Began focusing on frontend development." },
-  { year: "2022", event: "Started freelancing — built frontend projects, small business systems and automation tools (Discord / Telegram bots)." },
-  { year: "2023", event: "Focused on frontend performance: SSR/ISR, caching strategies, Core Web Vitals. First hackathon win." },
-  { year: "2024", event: "Dug deep into Node.js, PostgreSQL, and API architecture. Built CRM and e-commerce platforms." },
-  { year: "2025", event: "Integrated LLMs into production products. Built AI content pipelines, structured output systems, and agentic workflows." },
-  { year: "Now", event: "Focused on product architecture: systems that scale, teams that ship, products that last. Working with clients on CRM systems, automation tools, and AI integrations." },
-  { year: "Future", event: "Continuing to build scalable products and deepen expertise in AI-driven systems." },
-];
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 const techStack = [
   {
@@ -48,6 +35,10 @@ const techStack = [
 ];
 
 export default function AboutPage() {
+  const { lang, t } = useLanguage();
+
+  const isRu = lang === "ru";
+
   return (
     <div style={{ paddingTop: 60 }}>
       {/* Hero */}
@@ -63,12 +54,14 @@ export default function AboutPage() {
               marginBottom: 16,
             }}
           >
-            About
+            {t.about.tag}
           </p>
           <h1 className={styles.heroTitle}>
-            I build reliable fullstack systems
+            {isRu ? "Создаю надежные fullstack-системы" : "I build reliable fullstack systems"}
             <br />
-            <span style={{ color: "var(--text-muted)", fontStyle: "italic" }}>for real products.</span>
+            <span style={{ color: "var(--text-muted)", fontStyle: "italic" }}>
+              {isRu ? "для реальных продуктов." : "for real products."}
+            </span>
           </h1>
           <p
             style={{
@@ -78,7 +71,9 @@ export default function AboutPage() {
               marginBottom: 20,
             }}
           >
-            I&apos;m a Full Stack Developer with 4+ years of experience building web products — from small tools to enterprise CRM systems. My focus is on the intersection of product thinking and engineering craft.
+            {isRu
+              ? "Я Full Stack разработчик с 4+ годами опыта создания веб-продуктов — от небольших сервисов до enterprise CRM-систем. Фокусируюсь на стыке продуктового мышления и инженерного мастерства."
+              : t.about.bio1}
           </p>
           <p
             style={{
@@ -88,7 +83,9 @@ export default function AboutPage() {
               marginBottom: 20,
             }}
           >
-            I care about performance, clean data models, thoughtful API design, and user interfaces that feel obvious. I focus on building systems — not just isolated features — so products scale without turning into chaos.
+            {isRu
+              ? "Я уделяю особое внимание производительности, чистым моделям данных, продуманным API и очевидным пользовательским интерфейсам. Проектирую системы целиком, чтобы продукты легко масштабировались."
+              : t.about.bio2}
           </p>
           <p
             style={{
@@ -97,7 +94,9 @@ export default function AboutPage() {
               lineHeight: 1.8,
             }}
           >
-            Currently working on integrating LLMs into real products — focusing on automation, structured outputs, and reducing user friction.
+            {isRu
+              ? "В настоящее время активно внедряю LLM в реальные сервисы — создаю умных ассистентов, пайплайны обработки данных и автоматизированные процессы."
+              : "Currently working on integrating LLMs into real products — focusing on automation, structured outputs, and reducing user friction."}
           </p>
         </div>
 
@@ -114,16 +113,22 @@ export default function AboutPage() {
                 marginBottom: 16,
               }}
             >
-              Current Focus
+              {isRu ? "Текущий фокус" : "Current Focus"}
             </p>
             <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 12 }}>
-              {[
+              {(isRu ? [
+                "Архитектура продуктов и систем для стартапов",
+                "CRM-системы и автоматизация процессов",
+                "Внедрение LLM в продуктовый продакшен",
+                "Инженерия производительности фронтенда",
+                "Обмен знаниями и технический консалтинг",
+              ] : [
                 "Product & system architecture for early-stage startups",
                 "CRM & automation systems",
                 "LLM integration in production products",
                 "Frontend performance engineering",
                 "Technical writing & knowledge sharing",
-              ].map((item) => (
+              ]).map((item) => (
                 <li key={item} className={styles.sideboxItem}>
                   <span className={styles.sideboxIcon}>→</span>
                   {item}
@@ -143,15 +148,20 @@ export default function AboutPage() {
                 marginBottom: 16,
               }}
             >
-              Long-term Goals
+              {isRu ? "Долгосрочные цели" : "Long-term Goals"}
             </p>
             <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 12 }}>
-              {[
+              {(isRu ? [
+                "Создание и масштабирование собственного SaaS-продукта",
+                "Проектирование архитектуры высоконагруженных систем",
+                "Разработка продуктов для тысяч активных пользователей",
+                "Углубление экспертизы в проектировании гибких систем",
+              ] : [
                 "Build and scale a SaaS product end-to-end",
                 "Lead architecture on complex, high-impact systems",
                 "Work on products used by thousands+ users",
                 "Deepen expertise in product thinking and scalable system design",
-              ].map((item) => (
+              ]).map((item) => (
                 <li key={item} className={styles.sideboxItem}>
                   <span className={styles.sideboxIcon}>→</span>
                   {item}
@@ -162,11 +172,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-
       {/* Tech Stack */}
       <section className={styles.techStackSection}>
         <p className={styles.techStackLabel}>
-          Tech Stack
+          {t.about.skillsTag}
         </p>
         <div className={styles.techStackGrid}>
           {techStack.map(({ category, items }) => (
@@ -189,15 +198,16 @@ export default function AboutPage() {
       {/* CTA */}
       <div className={styles.ctaSection}>
         <p className={styles.ctaText}>
-          Have a project in mind or want to discuss an idea?
+          {t.about.ctaDesc}
         </p>
         <Link
           href="mailto:contact@ilyas-ones.com"
           className={styles.ctaButton}
         >
-          Get in Touch <ArrowRight size={14} />
+          {t.hero.getInTouch} <ArrowRight size={14} />
         </Link>
       </div>
     </div>
   );
 }
+
