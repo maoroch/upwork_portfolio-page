@@ -43,7 +43,7 @@ export default function HomePage() {
           </Link>
         </div>
         <div className="animate-fade-up delay-5" style={{ display: "flex", gap: 48, marginTop: 80, paddingTop: 40, borderTop: "1px solid var(--border)", flexWrap: "wrap" }}>
-          {[{ value: "4+", label: "Years building" }, { value: "20+", label: "Projects shipped" }, { value: "90+", label: "Lighthouse avg" }].map(({ value, label }) => (
+          {[{ value: "4+", label: "Years building" }, { value: "20+", label: "Projects shipped" }].map(({ value, label }) => (
             <div key={label}>
               <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 36, color: "var(--text)", lineHeight: 1 }}>{value}</div>
               <div style={{ color: "var(--text-muted)", fontSize: 12, marginTop: 6, letterSpacing: "0.04em", textTransform: "uppercase" }}>{label}</div>
